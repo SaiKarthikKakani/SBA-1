@@ -112,14 +112,16 @@ public class UserController extends HttpServlet {
 		Date date = Calendar.getInstance().getTime();  
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
 		
-		request.setAttribute("orderSuccess", "Your order is successfully registered!!!");
-		
 		String address = request.getParameter("address");
 		int finalAmount = (int) request.getSession().getAttribute("totalAmount");
 		String strDate = dateFormat.format(date);
 		
-		if(!address.isEmpty())
+		if(!address.isEmpty()) {
+			request.setAttribute("orderSuccess", "Your order is successfully registered!!!");
 			kitDAO.updateCoronaKitDetails(userName, address, finalAmount, strDate);
+		} else {
+			request.setAttribute("addressEmpty", "Please enter valid address!!!");
+		}
 		
 		return "placeorder.jsp";
 	}
@@ -161,8 +163,15 @@ public class UserController extends HttpServlet {
 
 	private String addNewItemToKit(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		int id = Integer.parseInt(request.getParameter("id"));
-		int quantity = Integer.parseInt(request.getParameter("qty"));
-		boolean isInserted = kitDAO.insertItemToKit(id, quantity, userName);
+		String qtyStr = request.getParameter("qty");
+		boolean isInserted = true;
+		int quantity;
+		
+		if(!qtyStr.isEmpty()) {
+			quantity = Integer.parseInt(qtyStr);
+			isInserted = kitDAO.insertItemToKit(id, quantity, userName);
+		} else
+			request.setAttribute("errorMessage", "Quantity should not be empty!!! Add items");
 		
 		if(!isInserted)
 			request.setAttribute("errorMessage", "Already added item to the kit. Updated the quantity");
