@@ -12,6 +12,7 @@
 <h3 align="right">User: <%=session.getAttribute("userName") %></h3>
 <p>
 	<font color="green">${orderSuccess}</font>
+	<font color="red">${addressEmpty}</font>
 </p>
 <form action="user?action=saveorder" method="post">
 	<h3>You are placing an order for the amount: <%=session.getAttribute("totalAmount") %></h3>

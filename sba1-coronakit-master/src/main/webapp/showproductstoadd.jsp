@@ -45,7 +45,10 @@
 		}
 	%>
 </table>
-<div align="right"><a href="user?action=showkit"><button>Show Kit</button></a></div>
+<div align="right">
+	<a href="admin?action=logout"><button>Cancel</button></a>
+	<a href="user?action=showkit"><button>Show Kit</button></a>
+</div>
 <hr/>	
 	<jsp:include page="footer.jsp"/>
 </body>

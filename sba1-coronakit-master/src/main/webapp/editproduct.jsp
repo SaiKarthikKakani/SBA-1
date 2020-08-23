@@ -25,13 +25,15 @@
 				Description</label> : <input type="text" name="pdesc"
 				value="<%=singleProductDetails.get(2)%>" /> <br />
 			<div align="right">
-				<a href="admin?action=list">
-					<input type="submit" value="Back" />
-				</a>
 				<input type="submit" value="Submit" />
 			</div>
 		</div>
 	</form>
+	<div align="right">
+		<a href="admin?action=list">
+			<input type="submit" value="Back" />
+		</a>
+	</div>
 	<hr />
 	<jsp:include page="footer.jsp" />
 </body>
