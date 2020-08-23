@@ -124,17 +124,33 @@ public class KitDao {
 			
 			isInserted = true;
 		} else {
-			System.out.println("in else loop");
-			System.out.println("quantity:" + quantity);
+			int existingQuantity = 0;
+			
+			String selectSql = "select quantity from coronakitdb.kitdetails where coronakitid = "  
+					+ "(select id from coronakitdb.coronakitinfo where personname = ?) and productid = ?";
+			PreparedStatement selectStmt = this.jdbcConnection.prepareStatement(selectSql);
+
+			selectStmt.setString(1, userName);
+			selectStmt.setInt(2, id);
+
+			ResultSet selectRs = selectStmt.executeQuery();
+
+			while (selectRs.next()) {
+				existingQuantity = selectRs.getInt("quantity");
+			}
+			
 			String updateSql = "update coronakitdb.kitdetails set quantity = ?, amount = ? where coronakitid = "
 					+ "(select id from coronakitdb.coronakitinfo where personname = ?) and productid = ?";
 			PreparedStatement updateStmt = this.jdbcConnection.prepareStatement(updateSql);
-			updateStmt.setInt(1, quantity);
-			updateStmt.setInt(2, quantity * Integer.parseInt(productCost));
+			updateStmt.setInt(1, quantity + existingQuantity);
+			updateStmt.setInt(2, (quantity + existingQuantity) * Integer.parseInt(productCost));
 			updateStmt.setString(3, userName);
 			updateStmt.setInt(4, id);
 			
 			updateStmt.executeUpdate();
+			
+			selectRs.close();
+			selectStmt.close();
 			
 			updateStmt.close();
 			this.disconnect();
