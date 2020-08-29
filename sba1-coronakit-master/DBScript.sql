@@ -1,3 +1,5 @@
+CREATE SCHEMA `coronakitdb` ;
+
 CREATE TABLE `coronakitdb`.`productmaster` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `productName` VARCHAR(45) NOT NULL,
